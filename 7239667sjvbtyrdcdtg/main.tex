@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{changepage}
+\usepackage{amssymb}
+\usepackage{graphicx}%
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{array}
+\usepackage{enumitem,multicol}
+\usepackage{scrextend}
+\usetikzlibrary{shadows,calc}
+\usetikzlibrary{shapes.multipart}
+\usepackage{listings}
+\usepackage{yfonts}
+\usepackage{forest}
+
+\usetikzlibrary{automata,positioning}
+
+
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+
+
+\setcounter{MaxMatrixCols}{30}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Mod}[1]{\ (\text{mod}\ #1)}
+
+\setlength{\columnsep}{10em}
+
+
+% binary trees
+\usetikzlibrary{shapes.geometric,arrows,fit,matrix,positioning}
+\tikzset
+{
+    treenode/.style = {circle, draw=black, align=center, 
+                          minimum size=1cm, anchor=center},
+    subtree/.style  = {regular polygon, regular polygon sides=3, 
+                          draw=black, align=center, 
+                          minimum size=1cm, anchor=center}
+}
+
+% adjacency list
+\usetikzlibrary{matrix,arrows,fit} 
+
+\tikzset{circarrow/.style={
+        *->,
+        shorten <=-2pt
+    }
+}
+
+
+
+\begin{document}
+
+\title{CS 689: Final Project Report}
+\author{Jasjeet Dhaliwal, Ekin Koker, Aaron Giera}
+\maketitle
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
