@@ -22,7 +22,7 @@ def convertScalar(data):
       if data[i][j]  > prob:
         prob = data[i][j]
         correct = j
-    y[i] = j
+    y[i] = correct
   return y 
 
 def next_batch(x_train, y_train, batch_size, index_in_epoch, num_examples):
