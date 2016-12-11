@@ -17,6 +17,7 @@ def cv_exp_machine(file, kfolds=5, ratio=0.1):
     
     # even out pos and negs
     # scipy isn't working well with shorter code
+    index = []
     if np.sum(y) > X.shape[0]/2:
         n = np.sum(y) - X.shape[0]/2
         mask = np.ones(y.shape[0])
@@ -24,38 +25,34 @@ def cv_exp_machine(file, kfolds=5, ratio=0.1):
             if n == 0:
                 break
             if y[i] == 1:
-                mask[i] = 0
+                index.append(i)
                 n -= 1
-    else:
+    elif np.sum(y) < X.shape[0]/2:
         n = y.shape[0]/2 - np.sum(y)
         mask = np.ones(X.shape[0])
         for i in range(X.shape[0]):
             if n == 0:
                 break
             if y[i] == 0:
-                mask[i] = 0
+                index.append(i)
                 n -= 1
+    mask = np.delete(np.array(range(X.shape[0])), index)
     X = X[mask, :]
-    y = np.logical_and(y, mask)
+    y = y[mask]
     
     cv = cross_validation.KFold(X.shape[0], n_folds=kfolds)
     mses = []
     for traincv, testcv in cv:
-        mask = np.zeros(X.shape[0])
-        mask[traincv] = 1
-        X_tr = X[mask, :]
-        mask = np.zeros(X.shape[0])
-        mask[testcv] = 1
-        X_te = X[np.logical_not(mask), :]
+        X_tr = X[traincv, :]
+        X_te = X[testcv, :]
         
         y_tr = y[traincv]
         y_te = y[testcv]
         
         model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=10, verbose=2)
-        model.fit(X_tr, y_tr)
-        yp = model.decision_function(X_te)
-        mses.append(np.norm(y_te - yp))
-        model.destroy()
+        model.fit(X_tr.toarray(), y_tr)
+        yp = model.decision_function(X_te.toarray())
+        mses.append(np.linalg.norm(y_te - yp))
     return mses
 
 
