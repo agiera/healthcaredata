@@ -11,7 +11,7 @@ from src.TTRegression import *
 
 
 
-def cv_exp_machine(file, kfolds=5, ratio=0.1):
+def cv_exp_machine(file, kfolds=5, ratio=0.2):
     X, y = load_svmlight_file(file)
     X, y = sklearn.utils.shuffle(X, y)
     
@@ -49,7 +49,7 @@ def cv_exp_machine(file, kfolds=5, ratio=0.1):
         y_tr = y[traincv]
         y_te = y[testcv]
         
-        model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=10, verbose=2)
+        model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=2000, verbose=2)
         model.fit(X_tr.toarray(), y_tr)
         probs = model.predict_proba(X_te.toarray())
         yp = np.array([np.argmax(prob) for prob in probs])
