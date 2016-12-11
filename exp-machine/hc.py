@@ -51,16 +51,22 @@ def cv_exp_machine(file, kfolds=5, ratio=0.1):
         
         model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=10, verbose=2)
         model.fit(X_tr.toarray(), y_tr)
-        yp = model.decision_function(X_te.toarray())
-        mses.append(np.linalg.norm(y_te - yp))
+        probs = model.predict_proba(X_te.toarray())
+        yp = np.array([np.argmax(prob) for prob in probs])
+        mses.append(np.dot(y_te - yp, y_te - yp)/y_te.shape[0])
     return mses
 
 
+with open("meps_2010_sf_sso.mse", 'w') as f:
+    f.write(str(cv_exp_machine("meps_2010_sf_sso.libfm")) + "\n")
+with open("meps_2011_sf_sso.mse", 'w') as f:
+    f.write(str(cv_exp_machine("meps_2011_sf_sso.libfm")) + "\n")
+with open("meps_2012_sf_sso.mse", 'w') as f:
+    f.write(str(cv_exp_machine("meps_2012_sf_sso.libfm")) + "\n")
+with open("meps_2013_sf_sso.mse", 'w') as f:
+    f.write(str(cv_exp_machine("meps_2013_sf_sso.libfm")) + "\n")
+with open("meps_2014_sf_sso.mse", 'w') as f:
+    f.write(str(cv_exp_machine("meps_2014_sf_sso.libfm")) + "\n")
 
-print("meps_2010_sf_sso.libfm: " + str(cv_exp_machine("meps_2010_sf_sso.libfm")) + "\n")
-print("meps_2011_sf_sso.libfm: " + str(cv_exp_machine("meps_2011_sf_sso.libfm")) + "\n")
-print("meps_2012_sf_sso.libfm: " + str(cv_exp_machine("meps_2012_sf_sso.libfm")) + "\n")
-print("meps_2013_sf_sso.libfm: " + str(cv_exp_machine("meps_2013_sf_sso.libfm")) + "\n")
-print("meps_2014_sf_sso.libfm: " + str(cv_exp_machine("meps_2014_sf_sso.libfm")) + "\n")
 
 
