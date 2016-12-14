@@ -55,18 +55,25 @@ def cv_exp_machine(file, kfolds=5, ratio=0.2):
         yp = np.array([np.argmax(prob) for prob in probs])
         mses.append(np.dot(y_te - yp, y_te - yp)/y_te.shape[0])
     return mses
+    
+def predict_y(f1, f2):
+    X, y = load_svmlight_file(f1)
+    model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=2000, verbose=2)
+    model.fit(X.toarray(), y)
+    X, y = load_svmlight_file(f2)
+    probs = model.predict_proba(X.toarray())
+    yp = np.array([np.argmax(prob) for prob in probs])
+    return np.dot(y_te - yp, y_te - yp)/y_te.shape[0]
 
 
-with open("meps_2010_sf_sso.mse", 'w') as f:
-    f.write(str(cv_exp_machine("meps_2010_sf_sso.libfm")) + "\n")
-with open("meps_2011_sf_sso.mse", 'w') as f:
-    f.write(str(cv_exp_machine("meps_2011_sf_sso.libfm")) + "\n")
-with open("meps_2012_sf_sso.mse", 'w') as f:
-    f.write(str(cv_exp_machine("meps_2012_sf_sso.libfm")) + "\n")
-with open("meps_2013_sf_sso.mse", 'w') as f:
-    f.write(str(cv_exp_machine("meps_2013_sf_sso.libfm")) + "\n")
-with open("meps_2014_sf_sso.mse", 'w') as f:
-    f.write(str(cv_exp_machine("meps_2014_sf_sso.libfm")) + "\n")
+with open("results.txt", 'a') as f:
+    f.write("2011 training 2010: "+str(predict_y("meps_2010_cccf_sso.libsvm", "meps_2011_cccf_sso.libsvm")) + "\n")
+with open("results.txt", 'a') as f:
+    f.write("2012 training 2011: "+str(predict_y("meps_2011_cccf_sso.libsvm", "meps_2012_cccf_sso.libsvm")) + "\n")
+with open("results.txt", 'a') as f:
+    f.write("2013 training 2012: "+str(predict_y("meps_2012_cccf_sso.libsvm", "meps_2013_cccf_sso.libsvm")) + "\n")
+with open("results.txt", 'a') as f:
+    f.write("2014 training 2013: "+str(predict_y("meps_2013_cccf_sso.libsvm", "meps_2014_cccf_sso.libsvm")) + "\n")
 
 
 
