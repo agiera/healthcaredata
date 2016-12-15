@@ -58,22 +58,22 @@ def cv_exp_machine(file, kfolds=5, ratio=0.2):
     
 def predict_y(f1, f2):
     X, y = load_svmlight_file(f1)
-    model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=2000, verbose=2)
+    model = TTRegression('all-subsets', 'logistic', rank=4, solver='riemannian-sgd', max_iter=1000, verbose=2)
     model.fit(X.toarray(), y)
     X, y = load_svmlight_file(f2)
     probs = model.predict_proba(X.toarray())
     yp = np.array([np.argmax(prob) for prob in probs])
-    return np.dot(y_te - yp, y_te - yp)/y_te.shape[0]
+    return np.dot(y - yp, y - yp)/y.shape[0]
 
 
 with open("results.txt", 'a') as f:
-    f.write("2011 training 2010: "+str(predict_y("meps_2010_cccf_sso.libsvm", "meps_2011_cccf_sso.libsvm")) + "\n")
+    f.write("2011 training 2010: "+str(predict_y("exp_4_2010.libsvm", "exp_4_2011.libsvm")) + "\n")
 with open("results.txt", 'a') as f:
-    f.write("2012 training 2011: "+str(predict_y("meps_2011_cccf_sso.libsvm", "meps_2012_cccf_sso.libsvm")) + "\n")
+    f.write("2012 training 2011: "+str(predict_y("exp_4_2011.libsvm", "exp_4_2012.libsvm")) + "\n")
 with open("results.txt", 'a') as f:
-    f.write("2013 training 2012: "+str(predict_y("meps_2012_cccf_sso.libsvm", "meps_2013_cccf_sso.libsvm")) + "\n")
+    f.write("2013 training 2012: "+str(predict_y("exp_4_2012.libsvm", "exp_4_2013.libsvm")) + "\n")
 with open("results.txt", 'a') as f:
-    f.write("2014 training 2013: "+str(predict_y("meps_2013_cccf_sso.libsvm", "meps_2014_cccf_sso.libsvm")) + "\n")
+    f.write("2014 training 2013: "+str(predict_y("exp_4_2013.libsvm", "exp_4_2014.libsvm")) + "\n")
 
 
 

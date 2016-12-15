@@ -22,11 +22,15 @@ def cv_logit(file, kfolds=5):
                       
 def pred_next_years(y1, y2):
     model = LogisticRegression()
-    X, y = load_svmlight_file(dir_path + "/" + y1)
-    model.fit(X, y)
-    X, y = load_svmlight_file(dir_path + "/" + y2)
-    yp = model.predict(X)
-    return np.sum(np.abs(y - yp))/float(y.shape[0])
+    X_tr, y_tr = load_svmlight_file(dir_path + "/" + y1)
+    X_te, y_te = load_svmlight_file(dir_path + "/" + y2)
+    if X_tr.shape[1] > X_te.shape[1]:
+        X_te = np.pad(X_te.toarray(), ((0, 0),(0, X_tr.shape[1] - X_te.shape[1])), mode='constant', constant_values=0)
+    elif X_tr.shape[1] < X_te.shape[1]:
+        X_tr = np.pad(X_tr.toarray(), ((0, 0),(0, X_te.shape[1] - X_tr.shape[1])), mode='constant', constant_values=0)
+    model.fit(X_tr, y_tr)
+    yp = model.predict(X_te)
+    return np.sum(np.abs(y_te - yp))/float(y_te.shape[0])
 
 #print("meps_2010_sf_sso.libfm: " + str(cv_logit("meps_2010_sf_sso.libfm")) + "\n")
 #print("meps_2011_sf_sso.libfm: " + str(cv_logit("meps_2011_sf_sso.libfm")) + "\n")
@@ -50,4 +54,8 @@ print("pred 2012: " + str(pred_next_years("meps_2011_cccf_sso.libsvm", "meps_201
 print("pred 2013: " + str(pred_next_years("meps_2012_cccf_sso.libsvm", "meps_2013_cccf_sso.libsvm")))
 print("pred 2014: " + str(pred_next_years("meps_2013_cccf_sso.libsvm", "meps_2014_cccf_sso.libsvm")))
 
+
+
+#for i in range(4):
+    #print("pred 201"+str(i+1)+": " + str(pred_next_years("fourth experiment/exp_4_201"+str(i)+".libsvm", "fourth experiment/exp_4_201"+str(i+1)+".libsvm")))
 
